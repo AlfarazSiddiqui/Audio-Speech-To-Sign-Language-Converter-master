@@ -1,95 +1,116 @@
-Audio Speech to Sign Language Converter
-An application that converts spoken audio or entered text into a sign-language presentation. The project processes speech/text input, cleans and prepares the text using NLP techniques, and displays matching sign-language animation clips where available.
-Features
-- Audio input: Provide spoken input for conversion.
-- Text input: Enter text directly as an alternative to audio.
-- Speech-to-text processing: Convert spoken input into text using the speech-recognition component configured in the project.
-- Text preprocessing: Use NLTK-based preprocessing to prepare recognized or entered text.
-- Sign-language presentation: Match processed words or phrases to available sign-language animation clips.
-- Visual output: Present the matching clips so users can follow the sign sequence.
-- Fallback handling: Handle words for which a matching sign clip is not available, according to the project's implementation.
-Note: The exact sign coverage and conversion quality depend on the sign clips and mappings included in the project. Word-by-word clip matching is not the same as translating a complete sentence into grammatically accurate sign language.
+🤟 Audio Speech to Sign Language Converter
+📌 Project Overview
 
-Tech Stack
-Component	Technology
-Language	Python
-Natural language processing	NLTK
-Input	Audio and/or text
-Speech recognition	The speech-recognition library or service configured in the project
-Sign output	Local sign-language animation/video clips
-Interface	Use the UI framework included in the project
-Environment	VS Code, Python virtual environment
+The Audio Speech to Sign Language Converter is a Django-based web application that converts live speech or typed text into Indian Sign Language (ISL) animations.
 
+The system uses speech recognition and Natural Language Processing (NLP) techniques to process the spoken sentence, extract its key words, and play the matching sign language video clips one after another. It demonstrates how Artificial Intelligence and web technologies can be applied to improve accessibility and communication for the hearing-impaired community.
 
-Project Structure
-The structure below is a suggested reference. Keep the actual filenames and folders from your project if they differ.
-audio_speech_to_sign_language/
-├── app.py                     # Main application entry point (if used)
-├── requirements.txt           # Python dependencies
-├── README.md
-├── assets/
-│   └── signs/                 # Sign-language animation/video clips
-├── modules/
-│   ├── speech_to_text.py      # Audio-to-text processing (if separated)
-│   ├── text_preprocessing.py  # NLTK preprocessing (if separated)
-│   └── sign_mapping.py        # Text/word-to-sign mapping (if separated)
-└── templates/ or static/      # Interface files, if used
-Getting Started
-1. Requirements
-Install Python and VS Code. Use a Python version supported by the libraries listed in your project's requirements.txt.
-2. Open the project
-Open the project folder in VS Code—the folder containing the main Python file and/or requirements.txt.
-3. Create and activate a virtual environment
-Windows PowerShell
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-If PowerShell blocks activation, you can use Command Prompt:
-venv\Scripts\activate.bat
-4. Install dependencies
-If the project has a requirements.txt file:
-python -m pip install -r requirements.txt
-If it does not, install the dependencies documented in the source code or project instructions. Do not install guessed packages without checking which libraries the project actually uses.
-5. Run the application
-Run the entry-point file that actually exists in your project. For example, if the entry point is app.py:
-python app.py
-If your project uses a different entry point or framework, follow the corresponding run command. Do not use app.py unless that file exists.
-How It Works
-1. Input: The user provides audio or types text.
-2. Speech recognition: Audio input is transcribed into text by the configured speech-recognition component.
-3. Preprocessing: The text is cleaned and processed using the project's NLTK workflow.
-4. Sign matching: The processed words or phrases are matched with available sign-language clips or mappings.
-5. Visual output: The application displays the matched sign animations in sequence.
-Audio input ──> Speech-to-text ──┐
-                                 ├──> Text preprocessing ──> Sign/clip matching ──> Visual sign output
-Text input ──────────────────────┘
-Important Notes
-- A microphone may be required for live audio input; browser or operating-system microphone permissions may also be needed.
-- Speech recognition may require an internet connection if the configured recognition service is online.
-- Recognition accuracy can vary with background noise, accents, microphone quality, and speaking speed.
-- The output is limited by the project's available sign-language clips and mapping rules.
-- Sign languages have their own grammar and regional variations. A simple word-to-clip system should not be described as a complete or certified sign-language translator unless the project actually implements that capability.
-- Check the project's licence and the permissions for any sign-language media before redistributing it.
-Troubleshooting
-Issue	What to check
-Dependency installation fails	Confirm the Python version and check requirements.txt.
-Microphone/audio does not work	Check microphone permissions, input device, and supported audio format.
-Speech is recognized incorrectly	Reduce background noise and speak clearly at a steady pace.
-A sign clip does not appear	Verify the clip file, filename, and mapping entry.
-Application does not start	Run the command from the project root and read the complete terminal traceback.
-NLTK resource error	Install only the NLTK resource requested by the error message, following the project's setup requirements.
+Note: This project is intended for educational purposes. Sign language output is produced from a limited set of pre-recorded animations and may not represent complete, grammatically accurate ISL.
 
+🎯 Objectives
+Convert live audio speech into text using the browser's speech recognition.
+Apply NLP techniques to simplify sentences into sign-language-friendly key words.
+Display relevant ISL animations for the processed words.
+Support manual text input along with voice input.
+Provide secure access through user sign-up and login.
+Demonstrate the use of AI and NLP for accessibility and social good.
+✨ Features
+Speech Input: Records speech with a mic button using the Web Speech API (en-IN).
+Text Input: Allows typing a sentence manually instead of speaking.
+NLP-Based Processing: Tokenizes, tags, filters, and lemmatizes the sentence using NLTK.
+Tense Handling: Detects past, present continuous, and future tense and adds the signs Before, Now, or Will accordingly.
+ISL Animation Playback: Plays matching word-level animations in sequence with Play/Pause control.
+Fingerspelling Fallback: If a word has no animation, it is split into letters and shown letter by letter (A–Z).
+Key Word Highlighting: Highlights the word currently being signed.
+User Authentication: Sign Up, Log In, and Log Out using Django's built-in authentication.
+SQLite Database: Stores user account data.
+Multi-Page Interface: Home, Animation, About, and Contact pages.
+🛠️ Technologies Used
+Python
+Django
+Natural Language Toolkit (NLTK)
+JavaScript (Web Speech API – webkitSpeechRecognition)
+HTML and CSS
+SQLite
+Blender 3D (used to create the 3D character animations)
+⚙️ System Workflow
+The user signs up or logs in to the application.
+The user speaks using the mic button or types a sentence.
+The speech is converted into text by the browser.
+The text is tokenized and tagged with parts of speech (POS).
+Stop words are removed and the remaining words are lemmatized.
+The tense of the sentence is detected and a tense word (Before / Now / Will) is added.
+Each word is checked against the animation library; unavailable words are split into letters.
+The ISL videos play one after another in the animation panel.
+ Speech / Text  →  Speech-to-Text  →  NLP Processing  →  Tense Detection
+                                                              ↓
+              ISL Animation Output  ←  Video Mapping  ←  Word / Letter Match
+🧠 NLP Methodology
 
-Future Improvements
-- Add support for more words and phrases.
-- Improve sentence-level matching and sign ordering.
-- Add captions and playback controls.
-- Support additional sign-language datasets with appropriate attribution.
-- Add tests for speech recognition, preprocessing, and clip mapping.
-- Improve accessibility with keyboard controls and clear error messages.
-Demo
-Add your project demonstration video or deployed application link here.
-Author
-- Name: Your Name
-- GitHub: Your GitHub profile URL
-- LinkedIn: Your LinkedIn profile URL
-Update the project structure, dependency list, run command, and feature descriptions to match the files and functionality actually present in your repository before publishing.
+The text processing pipeline in A2SL/views.py follows these steps:
+
+Tokenization: Splits the sentence into individual words.
+POS Tagging: Labels each word as a noun, verb, adjective, and so on.
+Stop Word Removal: Removes words such as is, am, are, the, a, an that are not signed in ISL.
+Lemmatization: Reduces words to their base form (for example, running → run).
+Pronoun Mapping: Converts I to Me to match the available sign.
+Tense Marking: Adds a time-indicating word at the beginning of the sentence.
+Animation Mapping: Matches each processed word to its .mp4 file, or falls back to letters.
+📂 Project Structure
+Audio-Speech-To-Sign-Language-Converter/
+│
+├── A2SL/                  # Django project (settings, urls, views, wsgi, asgi)
+├── assets/                # ISL animation videos (A–Z, 0–9, common words) and mic icon
+├── templates/             # HTML templates (base, home, animation, login, signup, about, contact)
+├── db.sqlite3             # SQLite database
+├── manage.py              # Django management script
+├── requirements.txt       # Python dependencies
+├── setup.py               # Package setup file
+├── LICENSE                # MIT License
+└── README.md              # Project documentation
+🚀 Installation and Setup
+Prerequisites
+Python 3.7 or higher
+A browser that supports the Web Speech API (such as Google Chrome)
+Internet connection (required for browser speech recognition and NLTK downloads)
+Steps
+Clone or download the project and open it in a terminal.
+bash
+   cd Audio-Speech-To-Sign-Language-Converter
+Install the dependencies.
+bash
+   pip install -r requirements.txt
+Download the required NLTK data (some are downloaded automatically on startup).
+python
+   import nltk
+   nltk.download('punkt')
+   nltk.download('averaged_perceptron_tagger')
+   nltk.download('wordnet')
+   nltk.download('omw-1.4')
+Run the development server.
+bash
+   python manage.py runserver
+Open http://127.0.0.1:8000/ in your browser.
+Sign up, log in, click the mic button (or type text), submit, and press Play/Pause to watch the sign language animation.
+🔮 Future Enhancements
+Expand the animation library with more words and phrases.
+Improve ISL grammar handling beyond simple word-by-word mapping.
+Add support for regional languages such as Hindi and Marathi.
+Improve the NLP pipeline for better sentence understanding.
+Add automatic playback after submitting text.
+Add a speed control and a full-screen mode for animations.
+Provide a sign-language-to-text feature using computer vision.
+Improve the user interface and mobile responsiveness.
+Deploy the application on a cloud platform.
+🔒 Privacy and Safety
+Do not commit the Django SECRET_KEY to public repositories; load it from an environment variable instead.
+Set DEBUG = False and configure ALLOWED_HOSTS before any public deployment.
+Avoid committing db.sqlite3 with real user accounts and passwords.
+Remove personal contact details from public pages before sharing the project.
+Speech recognition is handled by the browser, so audio may be processed by the browser vendor's service.
+Treat the output as an assistive aid, not as a replacement for a certified sign language interpreter.
+📄 License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+Original project by Jigar Gajjar, Nilkanth Patadiya, Ashish Bavaliya, and Dhairya Gadani.
