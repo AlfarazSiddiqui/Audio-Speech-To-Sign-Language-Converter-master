@@ -1,116 +1,154 @@
-🤟 Audio Speech to Sign Language Converter
-📌 Project Overview
+# 🤟 Audio Speech To Sign Language Converter
 
-The Audio Speech to Sign Language Converter is a Django-based web application that converts live speech or typed text into Indian Sign Language (ISL) animations.
+A Django web application that converts **live speech or typed text** into **Indian Sign Language (ISL) animations**. Speak into the mic, and the app transcribes your words, processes the sentence with NLP, and plays the matching sign videos one after another.
 
-The system uses speech recognition and Natural Language Processing (NLP) techniques to process the spoken sentence, extract its key words, and play the matching sign language video clips one after another. It demonstrates how Artificial Intelligence and web technologies can be applied to improve accessibility and communication for the hearing-impaired community.
+> Built to help bridge the communication gap between hearing and hearing-impaired people.
 
-Note: This project is intended for educational purposes. Sign language output is produced from a limited set of pre-recorded animations and may not represent complete, grammatically accurate ISL.
 
-🎯 Objectives
-Convert live audio speech into text using the browser's speech recognition.
-Apply NLP techniques to simplify sentences into sign-language-friendly key words.
-Display relevant ISL animations for the processed words.
-Support manual text input along with voice input.
-Provide secure access through user sign-up and login.
-Demonstrate the use of AI and NLP for accessibility and social good.
-✨ Features
-Speech Input: Records speech with a mic button using the Web Speech API (en-IN).
-Text Input: Allows typing a sentence manually instead of speaking.
-NLP-Based Processing: Tokenizes, tags, filters, and lemmatizes the sentence using NLTK.
-Tense Handling: Detects past, present continuous, and future tense and adds the signs Before, Now, or Will accordingly.
-ISL Animation Playback: Plays matching word-level animations in sequence with Play/Pause control.
-Fingerspelling Fallback: If a word has no animation, it is split into letters and shown letter by letter (A–Z).
-Key Word Highlighting: Highlights the word currently being signed.
-User Authentication: Sign Up, Log In, and Log Out using Django's built-in authentication.
-SQLite Database: Stores user account data.
-Multi-Page Interface: Home, Animation, About, and Contact pages.
-🛠️ Technologies Used
-Python
-Django
-Natural Language Toolkit (NLTK)
-JavaScript (Web Speech API – webkitSpeechRecognition)
-HTML and CSS
-SQLite
-Blender 3D (used to create the 3D character animations)
-⚙️ System Workflow
-The user signs up or logs in to the application.
-The user speaks using the mic button or types a sentence.
-The speech is converted into text by the browser.
-The text is tokenized and tagged with parts of speech (POS).
-Stop words are removed and the remaining words are lemmatized.
-The tense of the sentence is detected and a tense word (Before / Now / Will) is added.
-Each word is checked against the animation library; unavailable words are split into letters.
-The ISL videos play one after another in the animation panel.
- Speech / Text  →  Speech-to-Text  →  NLP Processing  →  Tense Detection
-                                                              ↓
-              ISL Animation Output  ←  Video Mapping  ←  Word / Letter Match
-🧠 NLP Methodology
 
-The text processing pipeline in A2SL/views.py follows these steps:
+---
 
-Tokenization: Splits the sentence into individual words.
-POS Tagging: Labels each word as a noun, verb, adjective, and so on.
-Stop Word Removal: Removes words such as is, am, are, the, a, an that are not signed in ISL.
-Lemmatization: Reduces words to their base form (for example, running → run).
-Pronoun Mapping: Converts I to Me to match the available sign.
-Tense Marking: Adds a time-indicating word at the beginning of the sentence.
-Animation Mapping: Matches each processed word to its .mp4 file, or falls back to letters.
-📂 Project Structure
+## ✨ Features
+
+- 🎙️ **Speech-to-text** using the browser's Web Speech API (`en-IN`)
+- ⌨️ **Manual text input** as an alternative to the mic
+- 🧠 **NLP preprocessing** with NLTK: tokenization, POS tagging, stopword removal, lemmatization
+- ⏱️ **Tense detection**: adds ISL tense markers (`Before`, `Will`, `Now`) to the sentence
+- 🔤 **Fingerspelling fallback**: words with no sign video are spelled letter by letter
+- 🎬 **Sequential video playback** with word highlighting and a Play/Pause control
+- 🔐 **User authentication**: sign up, log in and log out (Django auth)
+- 📚 **150+ sign videos** for words, letters (A–Z) and digits (0–9)
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Backend | Python, Django |
+| NLP | NLTK |
+| Frontend | HTML, CSS, JavaScript |
+| Speech recognition | Web Speech API (`webkitSpeechRecognition`) |
+| Animations | 3D character animated in Blender, exported as MP4 |
+| Database | SQLite |
+
+---
+
+## ⚙️ How It Works
+
+```
+ Speech / Text
+      │
+      ▼
+ Web Speech API  ──►  Text sentence
+      │
+      ▼
+ Django view (animation_view)
+   1. Tokenize the sentence
+   2. POS-tag words and detect tense
+   3. Remove stopwords (is, am, are, the, a ...)
+   4. Lemmatize remaining words
+   5. Add tense word (Before / Will / Now)
+   6. Check each word for a matching <word>.mp4
+        ├─ found      → use the word video
+        └─ not found  → split into letters (fingerspelling)
+      │
+      ▼
+ Browser plays the videos in order
+```
+
+**Example:** *"I will go to college"* → `Will` `Me` `Go` `College`
+
+---
+
+## 📁 Project Structure
+
+```
 Audio-Speech-To-Sign-Language-Converter/
-│
-├── A2SL/                  # Django project (settings, urls, views, wsgi, asgi)
-├── assets/                # ISL animation videos (A–Z, 0–9, common words) and mic icon
-├── templates/             # HTML templates (base, home, animation, login, signup, about, contact)
-├── db.sqlite3             # SQLite database
-├── manage.py              # Django management script
-├── requirements.txt       # Python dependencies
-├── setup.py               # Package setup file
-├── LICENSE                # MIT License
-└── README.md              # Project documentation
-🚀 Installation and Setup
-Prerequisites
-Python 3.7 or higher
-A browser that supports the Web Speech API (such as Google Chrome)
-Internet connection (required for browser speech recognition and NLTK downloads)
-Steps
-Clone or download the project and open it in a terminal.
-bash
-   cd Audio-Speech-To-Sign-Language-Converter
-Install the dependencies.
-bash
-   pip install -r requirements.txt
-Download the required NLTK data (some are downloaded automatically on startup).
-python
-   import nltk
-   nltk.download('punkt')
-   nltk.download('averaged_perceptron_tagger')
-   nltk.download('wordnet')
-   nltk.download('omw-1.4')
-Run the development server.
-bash
-   python manage.py runserver
-Open http://127.0.0.1:8000/ in your browser.
-Sign up, log in, click the mic button (or type text), submit, and press Play/Pause to watch the sign language animation.
-🔮 Future Enhancements
-Expand the animation library with more words and phrases.
-Improve ISL grammar handling beyond simple word-by-word mapping.
-Add support for regional languages such as Hindi and Marathi.
-Improve the NLP pipeline for better sentence understanding.
-Add automatic playback after submitting text.
-Add a speed control and a full-screen mode for animations.
-Provide a sign-language-to-text feature using computer vision.
-Improve the user interface and mobile responsiveness.
-Deploy the application on a cloud platform.
-🔒 Privacy and Safety
-Do not commit the Django SECRET_KEY to public repositories; load it from an environment variable instead.
-Set DEBUG = False and configure ALLOWED_HOSTS before any public deployment.
-Avoid committing db.sqlite3 with real user accounts and passwords.
-Remove personal contact details from public pages before sharing the project.
-Speech recognition is handled by the browser, so audio may be processed by the browser vendor's service.
-Treat the output as an assistive aid, not as a replacement for a certified sign language interpreter.
-📄 License
+├── A2SL/                 # Django project package
+│   ├── settings.py
+│   ├── urls.py
+│   └── views.py          # NLP pipeline + auth views
+├── assets/               # Sign language videos (words, A-Z, 0-9) and mic icon
+├── templates/            # base, home, about, contact, login, signup, animation
+├── manage.py
+├── requirements.txt
+├── setup.py
+├── db.sqlite3
+├── LICENSE
+└── README.md
+```
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+---
 
-Original project by Jigar Gajjar, Nilkanth Patadiya, Ashish Bavaliya, and Dhairya Gadani.
+## 📋 Prerequisites
+
+- Python **3.7+**
+- **Google Chrome** or another browser that supports the Web Speech API (Firefox does not support speech recognition)
+- Internet connection (the Web Speech API and the first-time NLTK downloads need it)
+
+---
+
+
+
+Open **http://127.0.0.1:8000/** in your browser. To use another port: `python manage.py runserver 8080`.
+
+> **Note:** On first run, `settings.py` automatically downloads the required NLTK data (`averaged_perceptron_tagger`, `wordnet`, `omw-1.4`). If you get a tokenizer error (`punkt`), run:
+> ```bash
+> python -m nltk.downloader punkt
+> ```
+
+---
+
+## 📖 Usage
+
+1. Open the app and **Sign up** (or log in).
+2. Go to the **Animation** page.
+3. Click the **mic button** and speak, or type a sentence in the text box.
+4. Press **Submit**.
+5. View the extracted key words and watch the sign animations play. Use **Play/Pause** to control playback.
+
+---
+
+## 🔗 Routes
+
+| URL | Description |
+|-----|-------------|
+| `/` | Home page |
+| `/about/` | About page |
+| `/contact/` | Contact page |
+| `/signup/` | Create an account |
+| `/login/` | Log in |
+| `/logout/` | Log out |
+| `/animation/` | Speech/text to sign converter (login required) |
+| `/admin/` | Django admin |
+
+---
+
+## ➕ Adding New Signs
+
+1. Add a video named exactly like the word (for example `Hospital.mp4`) to the `assets/` folder.
+2. Restart the server. The pipeline will automatically use it instead of fingerspelling.
+
+---
+
+## ⚠️ Limitations
+
+- Supports **English input** only (`en-IN` recognition).
+- Vocabulary is limited to the available videos; other words are fingerspelled.
+- Sentence handling is rule-based and does not follow the full grammar of ISL.
+- Speech recognition depends on browser support and an internet connection.
+
+---
+
+## 🔮 Future Scope
+
+- Larger ISL vocabulary and better grammar mapping
+- Support for more input languages (Hindi, Marathi, etc.)
+- Mobile app version
+- Reverse conversion: sign language to text/speech
+
+---
+
+
+
